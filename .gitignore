@@ -1,0 +1,7 @@
+/build/
+/ssd
+/testshell
+/nand.txt
+/result.txt
+*.tmp.*
+*.log
