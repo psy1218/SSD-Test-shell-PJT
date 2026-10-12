@@ -49,6 +49,21 @@ SSD는 테스트 대상(System Under Test)이고 Test Shell은 입력, 실행, �
 CLI 검증이 끝난 뒤에만 저장 API를 호출하므로 잘못된 사용자 입력은
 `nand.txt`를 생성하거나 변경하지 않는다.
 
+## Phase 3 Test Shell 계층
+
+Test Shell은 SSD와 링크하지 않고 `fork()`로 자식 프로세스를 만든 후
+`execv()`에 인자 배열을 전달한다. 부모는 `waitpid()`로 정상 종료, 종료 코드,
+시그널 종료를 구분한다. 셸 문자열을 해석하는 `system()`은 사용하지 않는다.
+
+- `write`/`read`: SSD W/R 인터페이스 재사용
+- `fullwrite`/`fullread`: LBA 0~99에 대해 SSD 프로세스를 순차 실행
+- `read`: 성공한 SSD가 만든 `result.txt` 형식을 다시 검증한 뒤 출력
+- `--ssd-path`: 정상 SSD와 향후 결함 주입 SSD 선택
+- 입력: 256바이트 고정 버퍼와 초과 입력 소진으로 오버플로 방지
+
+프롬프트는 stdin이 터미널일 때만 표시한다. 파이프 입력과 CI에서는 결과만
+출력되어 기계적인 판정이 가능하다.
+
 ## 오류 정책
 
 저장 API는 화면 문자열을 출력하지 않고 상태 코드를 호출자에게 반환한다.

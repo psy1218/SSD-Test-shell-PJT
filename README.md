@@ -9,9 +9,10 @@ C11과 POSIX 환경에서 동작하는 가상 SSD 및 자동 검증 프레임워
 - Phase 0: 요구사항, 아키텍처, 인터페이스, NAND 포맷 확정
 - Phase 1: 400바이트 NAND 저장 계층 구현 및 단위 테스트
 - Phase 2: SSD W/R CLI, 입력 검증, 결과 파일, 종료 코드 구현
-- Phase 3 이후: 아직 구현하지 않음
+- Phase 3: 독립 프로세스 기반 Test Shell과 기본 명령 구현
+- Phase 4 이후: 구현 진행 예정
 
-현재 `ssd` 실행 파일까지 제공하며 Test Shell은 Phase 3에서 추가합니다.
+현재 `ssd`와 `testshell` 두 독립 실행 파일을 제공합니다.
 
 ## 기준 환경
 
@@ -49,6 +50,31 @@ cat result.txt
 종료 코드는 정상 0, 명령/인자 오류 2, 파일 I/O 오류 3, 손상 NAND 4,
 기타 내부 오류 5입니다.
 
+## Test Shell
+
+```sh
+./testshell
+```
+
+지원 명령:
+
+```text
+write <LBA> <0xVALUE>
+read <LBA>
+fullwrite <0xVALUE>
+fullread
+help
+exit
+```
+
+Test Shell은 SSD 코드를 직접 호출하지 않고 매 명령마다
+`fork()` → `execv()` → `waitpid()`로 `ssd` 프로세스를 실행합니다.
+다른 SSD 실행 파일을 사용할 때는 다음과 같이 지정합니다.
+
+```sh
+./testshell --ssd-path ./ssd
+```
+
 ## 문서
 
 - `docs/01_requirements.md`: 요구사항 및 테스트 추적성
@@ -57,6 +83,7 @@ cat result.txt
 - `docs/04_storage_format.md`: NAND 바이너리 포맷
 - `reports/phase1_validation.md`: 실제 빌드 및 테스트 증적
 - `reports/phase2_validation.md`: SSD CLI 및 회귀 테스트 증적
+- `reports/phase3_validation.md`: Test Shell 및 프로세스 실행 증적
 
 ## 저장 형식 주의
 

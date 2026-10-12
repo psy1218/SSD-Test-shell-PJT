@@ -92,3 +92,24 @@ ssd R [LBA]
 
 Read 결과는 임시 파일 기록, `fflush()`, `fsync()`, `fclose()`가 모두
 성공한 뒤 `rename()`으로 교체한다. 실패 시 기존 `result.txt`를 보존한다.
+
+## Phase 3 Test Shell 인터페이스
+
+```text
+testshell [--ssd-path PATH]
+```
+
+기본 SSD 경로는 `./ssd`다. 지원 명령과 성공 출력은 다음과 같다.
+
+| 명령 | 동작 | 성공 출력 |
+|---|---|---|
+| `write LBA VALUE` | SSD W 한 번 실행 | 없음 |
+| `read LBA` | SSD R 실행 후 결과 확인 | `0xXXXXXXXX` 한 줄 |
+| `fullwrite VALUE` | LBA 0~99에 W 실행 | 없음 |
+| `fullread` | LBA 0~99에 R 실행 | `LBA NN: 0xXXXXXXXX` 100줄 |
+| `help` | 사용법 출력 | 명령별 도움말 |
+| `exit` | 입력 루프 정상 종료 | 없음 |
+
+잘못된 Shell 명령은 `INVALID COMMAND`를 출력하지만 입력 루프를 종료하지
+않는다. EOF는 정상 종료로 처리한다. 255바이트 이상으로 버퍼를 채우는 입력은
+남은 문자를 개행까지 소진한 뒤 한 번의 잘못된 명령으로 처리한다.
