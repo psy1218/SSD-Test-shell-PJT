@@ -42,9 +42,10 @@ Fault Injection은 이후 Phase의 범위다.
 | REPORT-001 | 로그, 요약, CSV, Markdown 보고서를 실제 결과로 생성한다. | TC-AUTO-001, 008 |
 | PERF-001 | monotonic clock으로 동일 조건을 반복 측정하고 최소·평균·중앙값·최대를 보고한다. | TC-PERF-001 |
 | PERF-002 | 프로세스 실행 방식과 직접 저장 API 방식의 차이를 실제 수치로 비교한다. | 성능 보고서 |
+| QUAL-001 | 경고, ASan, UBSan, 정적 분석, 회귀 테스트 결과를 남긴다. | 전체 품질 게이트 |
+| CI-001 | Push와 Pull Request에서 동일한 품질 게이트를 자동 실행한다. | GitHub Actions |
 | FAULT-001 | 의도적 LBA 99 및 Overwrite 결함이 지정 테스트에서 검출됨을 증명한다. | TC-M001~005 |
 | REG-001 | 결함 검출 후 정상 SSD 전체 테스트가 다시 PASS해야 한다. | TC-M000, TC-M006 |
-| QUAL-001 | 경고, ASan, UBSan, 회귀 테스트 결과를 남긴다. | Phase 8 |
 
 ## 설계상 비기능 요구사항
 

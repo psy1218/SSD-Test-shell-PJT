@@ -1,0 +1,36 @@
+name: SSD Validation CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  build-test-sanitize-fault:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Toolchain
+        run: |
+          gcc --version
+          make --version
+
+      - name: Full quality gate
+        run: sh scripts/run_all_tests.sh
+
+      - name: Upload validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-evidence
+          if-no-files-found: warn
+          path: |
+            logs/test_result.log
+            logs/test_summary.txt
+            reports/test_report.csv
+            reports/test_report.md

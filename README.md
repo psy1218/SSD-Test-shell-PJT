@@ -14,7 +14,8 @@ C11과 POSIX 환경에서 동작하는 가상 SSD 및 자동 검증 프레임워
 - Phase 5: TestApp1/2, 테스트 러너, 격리, 자동 보고서 구현
 - Phase 6: Fault Injection, Mutation 검출, 정상 회귀 구현
 - Phase 7: 반복 성능 측정과 프로세스/직접 호출 비교 구현
-- Phase 8 이후: 구현 진행 예정
+- Phase 8: Sanitizer, 정적 분석, 전체 품질 게이트, CI 구현
+- Phase 9: 최종 문서화 진행 예정
 
 현재 `ssd`와 `testshell` 두 독립 실행 파일을 제공합니다.
 
@@ -120,6 +121,15 @@ make benchmark
 기록합니다. 이 값은 파일 기반 시뮬레이터의 프로세스·파일 I/O 비용이며
 실제 SSD의 IOPS나 지연시간이 아닙니다.
 
+## 전체 품질 게이트
+
+```sh
+sh scripts/run_all_tests.sh
+```
+
+일반 테스트, ASan/UBSan, Fault Injection, 정상 회귀, GCC `-fanalyzer`, 자동
+증적 생성을 차례로 실행합니다. GitHub Actions도 같은 스크립트를 사용합니다.
+
 ## 문서
 
 - `docs/01_requirements.md`: 요구사항 및 테스트 추적성
@@ -130,6 +140,7 @@ make benchmark
 - `docs/06_test_matrix.md`: 요구사항과 테스트 매핑
 - `docs/07_fault_injection.md`: 결함 주입 및 판정 절차
 - `docs/08_performance.md`: 성능 측정 방법과 해석
+- `docs/09_quality_ci.md`: 전체 품질 게이트와 GitHub Actions
 - `reports/phase1_validation.md`: 실제 빌드 및 테스트 증적
 - `reports/phase2_validation.md`: SSD CLI 및 회귀 테스트 증적
 - `reports/phase3_validation.md`: Test Shell 및 프로세스 실행 증적
@@ -137,6 +148,7 @@ make benchmark
 - `reports/phase5_validation.md`: 자동화·격리·보고서 검증 증적
 - `reports/phase6_validation.md`: 결함 검출과 회귀 테스트 증적
 - `reports/phase7_validation.md`: 실제 반복 성능 측정 증적
+- `reports/phase8_validation.md`: 정적·동적 분석 및 CI 증적
 
 ## 저장 형식 주의
 
