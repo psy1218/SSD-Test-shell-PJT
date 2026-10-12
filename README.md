@@ -13,7 +13,8 @@ C11과 POSIX 환경에서 동작하는 가상 SSD 및 자동 검증 프레임워
 - Phase 4: 독립 Reference Test Oracle 구현
 - Phase 5: TestApp1/2, 테스트 러너, 격리, 자동 보고서 구현
 - Phase 6: Fault Injection, Mutation 검출, 정상 회귀 구현
-- Phase 7 이후: 구현 진행 예정
+- Phase 7: 반복 성능 측정과 프로세스/직접 호출 비교 구현
+- Phase 8 이후: 구현 진행 예정
 
 현재 `ssd`와 `testshell` 두 독립 실행 파일을 제공합니다.
 
@@ -108,6 +109,17 @@ make fault-test
 마지막에 정상 SSD 전체 회귀가 다시 PASS하는지 확인합니다. 결함 바이너리는
 배포용 `ssd`에 포함되지 않습니다.
 
+## 성능 측정
+
+```sh
+make benchmark
+```
+
+`CLOCK_MONOTONIC`으로 각 항목을 5회 측정해 최소·평균·중앙값·최대를
+`reports/performance_report.csv`와 `reports/performance_report.md`에
+기록합니다. 이 값은 파일 기반 시뮬레이터의 프로세스·파일 I/O 비용이며
+실제 SSD의 IOPS나 지연시간이 아닙니다.
+
 ## 문서
 
 - `docs/01_requirements.md`: 요구사항 및 테스트 추적성
@@ -117,12 +129,14 @@ make fault-test
 - `docs/05_test_plan.md`: 자동 테스트 전략과 실행 계약
 - `docs/06_test_matrix.md`: 요구사항과 테스트 매핑
 - `docs/07_fault_injection.md`: 결함 주입 및 판정 절차
+- `docs/08_performance.md`: 성능 측정 방법과 해석
 - `reports/phase1_validation.md`: 실제 빌드 및 테스트 증적
 - `reports/phase2_validation.md`: SSD CLI 및 회귀 테스트 증적
 - `reports/phase3_validation.md`: Test Shell 및 프로세스 실행 증적
 - `reports/phase4_validation.md`: 독립 Oracle 검증 증적
 - `reports/phase5_validation.md`: 자동화·격리·보고서 검증 증적
 - `reports/phase6_validation.md`: 결함 검출과 회귀 테스트 증적
+- `reports/phase7_validation.md`: 실제 반복 성능 측정 증적
 
 ## 저장 형식 주의
 
