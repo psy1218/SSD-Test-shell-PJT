@@ -12,6 +12,7 @@ STORAGE_TEST = $(BUILD_DIR)/test_storage
 SANITIZED_TEST = $(BUILD_DIR)/test_storage_sanitize
 CLI_TEST = tests/test_cli.sh
 SHELL_TEST = tests/test_shell.sh
+AUTOMATION_TEST = tests/test_automation.sh
 
 .PHONY: all test test-sanitize clean
 
@@ -44,6 +45,7 @@ test: $(SSD_BINARY) $(TESTSHELL_BINARY) $(STORAGE_TEST)
 	./$(STORAGE_TEST)
 	sh $(CLI_TEST) ./$(SSD_BINARY)
 	sh $(SHELL_TEST) ./$(TESTSHELL_BINARY) ./$(SSD_BINARY)
+	sh $(AUTOMATION_TEST) ./$(TESTSHELL_BINARY) ./$(SSD_BINARY)
 
 test-sanitize: $(SANITIZED_SSD) $(SANITIZED_TESTSHELL) $(SANITIZED_TEST)
 	ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 \
@@ -52,6 +54,9 @@ test-sanitize: $(SANITIZED_SSD) $(SANITIZED_TESTSHELL) $(SANITIZED_TEST)
 	UBSAN_OPTIONS=halt_on_error=1 sh $(CLI_TEST) ./$(SANITIZED_SSD)
 	ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 \
 	UBSAN_OPTIONS=halt_on_error=1 sh $(SHELL_TEST) \
+		./$(SANITIZED_TESTSHELL) ./$(SANITIZED_SSD)
+	ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 \
+	UBSAN_OPTIONS=halt_on_error=1 sh $(AUTOMATION_TEST) \
 		./$(SANITIZED_TESTSHELL) ./$(SANITIZED_SSD)
 
 clean:

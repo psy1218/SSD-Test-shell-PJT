@@ -10,7 +10,9 @@ C11과 POSIX 환경에서 동작하는 가상 SSD 및 자동 검증 프레임워
 - Phase 1: 400바이트 NAND 저장 계층 구현 및 단위 테스트
 - Phase 2: SSD W/R CLI, 입력 검증, 결과 파일, 종료 코드 구현
 - Phase 3: 독립 프로세스 기반 Test Shell과 기본 명령 구현
-- Phase 4 이후: 구현 진행 예정
+- Phase 4: 독립 Reference Test Oracle 구현
+- Phase 5: TestApp1/2, 테스트 러너, 격리, 자동 보고서 구현
+- Phase 6 이후: 구현 진행 예정
 
 현재 `ssd`와 `testshell` 두 독립 실행 파일을 제공합니다.
 
@@ -75,15 +77,38 @@ Test Shell은 SSD 코드를 직접 호출하지 않고 매 명령마다
 ./testshell --ssd-path ./ssd
 ```
 
+## 자동 검증
+
+```sh
+./testshell --run-tests
+./testshell --run-test TC-F003
+```
+
+대화형 Shell에서는 `testapp1`, `testapp2`, `testall`, `testcase <ID>`,
+`testsummary`를 사용할 수 있습니다. 각 테스트는 `/tmp` 아래의 독립 디렉터리와
+0으로 초기화된 Reference Model을 사용하므로 사용자 `nand.txt`를 변경하지
+않습니다.
+
+실행 결과는 다음 위치에 생성됩니다.
+
+- `logs/test_result.log`
+- `logs/test_summary.txt`
+- `reports/test_report.csv`
+- `reports/test_report.md`
+
 ## 문서
 
 - `docs/01_requirements.md`: 요구사항 및 테스트 추적성
 - `docs/02_architecture.md`: 시스템 구성과 책임 분리
 - `docs/03_interface_spec.md`: Phase 1 C API 계약
 - `docs/04_storage_format.md`: NAND 바이너리 포맷
+- `docs/05_test_plan.md`: 자동 테스트 전략과 실행 계약
+- `docs/06_test_matrix.md`: 요구사항과 테스트 매핑
 - `reports/phase1_validation.md`: 실제 빌드 및 테스트 증적
 - `reports/phase2_validation.md`: SSD CLI 및 회귀 테스트 증적
 - `reports/phase3_validation.md`: Test Shell 및 프로세스 실행 증적
+- `reports/phase4_validation.md`: 독립 Oracle 검증 증적
+- `reports/phase5_validation.md`: 자동화·격리·보고서 검증 증적
 
 ## 저장 형식 주의
 

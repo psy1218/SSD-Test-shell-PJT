@@ -35,8 +35,11 @@ Fault Injection은 이후 Phase의 범위다.
 | SHELL-002 | 지나치게 긴 입력과 잘못된 인자 후에도 다음 명령을 처리한다. | `TC-SH-004`, `008`~`010` |
 | SHELL-003 | `--ssd-path`로 실행 대상을 선택하고 실행 실패를 감지한다. | `TC-SH-005`, `012` |
 | PROC-001 | SSD는 `fork()`/`execv()`/`waitpid()`로 실행한다. | 코드 검토, `TC-SH-001`~`006` |
-| ORACLE-001 | 기대값 모델은 SSD의 실제 NAND 데이터와 독립적이어야 한다. | Phase 4 |
-| AUTO-001 | TestApp1/2와 케이스별 PASS/FAIL 집계를 제공한다. | Phase 5 |
+| ORACLE-001 | 기대값 모델은 SSD의 실제 NAND 데이터와 독립적이어야 한다. | TC-F001~005, TC-B001~002, TC-S001~002 |
+| AUTO-001 | TestApp1/2와 케이스별 PASS/FAIL 집계를 제공한다. | TC-AUTO-001~004 |
+| AUTO-002 | 각 테스트는 사용자 NAND와 분리된 초기 상태에서 실행한다. | TC-AUTO-005~006 |
+| AUTO-003 | 비대화형 전체/개별 실행과 0/1/2 종료 코드를 제공한다. | TC-AUTO-001~003, 007 |
+| REPORT-001 | 로그, 요약, CSV, Markdown 보고서를 실제 결과로 생성한다. | TC-AUTO-001, 008 |
 | FAULT-001 | 의도적 결함이 테스트에서 검출됨을 증명한다. | Phase 6 |
 | QUAL-001 | 경고, ASan, UBSan, 회귀 테스트 결과를 남긴다. | Phase 8 |
 

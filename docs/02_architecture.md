@@ -64,6 +64,28 @@ Test Shell은 SSD와 링크하지 않고 `fork()`로 자식 프로세스를 만�
 프롬프트는 stdin이 터미널일 때만 표시한다. 파이프 입력과 CI에서는 결과만
 출력되어 기계적인 판정이 가능하다.
 
+## Phase 4 Reference Oracle
+
+자동 테스트 시작 시 `uint32_t expected[100]`을 0으로 초기화한다. SSD Write가
+성공한 경우에만 해당 기대값을 갱신하고, Read 결과는 `result.txt`에서 별도로
+파싱해 기대값과 비교한다. Oracle은 `nand.txt`, SSD 저장 함수, SSD의 실제값을
+기대값 생성에 사용하지 않는다.
+
+## Phase 5 Test Runner
+
+각 TestCase는 ID, 요구사항 ID, 이름, 실행 함수를 가진다. 러너는 테스트마다
+`mkdtemp()`로 독립 디렉터리를 만들고 그 안에서 SSD를 실행한 뒤 알려진 파일만
+정리한다. 결과는 PASS, FAIL, ERROR로 구분하며 데이터 불일치는 FAIL,
+프로세스·환경 문제는 ERROR다.
+
+```text
+TestCase input -> Reference Model -> expected
+       |                                |
+       +-> independent SSD process -> actual
+                                        |
+                              compare and report
+```
+
 ## 오류 정책
 
 저장 API는 화면 문자열을 출력하지 않고 상태 코드를 호출자에게 반환한다.

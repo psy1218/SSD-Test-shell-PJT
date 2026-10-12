@@ -81,9 +81,10 @@ test_help()
 exit
 '
     [ "$shell_status" -eq 0 ] || return 1
-    [ "$(wc -l <stdout.txt)" -eq 6 ] || return 1
+    [ "$(wc -l <stdout.txt)" -eq 11 ] || return 1
     grep -q '^write ' stdout.txt || return 1
     grep -q '^fullread ' stdout.txt || return 1
+    grep -q '^testall ' stdout.txt || return 1
     grep -q '^exit ' stdout.txt
 }
 

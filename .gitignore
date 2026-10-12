@@ -5,3 +5,6 @@
 /result.txt
 *.tmp.*
 *.log
+/logs/test_summary.txt
+/reports/test_report.csv
+/reports/test_report.md
