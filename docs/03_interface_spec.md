@@ -1,4 +1,4 @@
-# Phase 1 C 인터페이스 명세
+# SSD 인터페이스 명세
 
 공개 선언은 `ssd.h`, 구현은 `ssd.c`에 둔다.
 
@@ -54,3 +54,41 @@
 | `SSD_STATUS_INVALID_ARGUMENT` | NULL, 빈 경로, 범위 밖 LBA |
 | `SSD_STATUS_IO_ERROR` | 운영체제 또는 파일 I/O 오류 |
 | `SSD_STATUS_CORRUPT_NAND` | NAND 크기/내용 계약 위반 |
+
+## Phase 2 명령행 인터페이스
+
+### Write
+
+```text
+ssd W [LBA] [VALUE]
+```
+
+- LBA: 숫자만 포함한 0~99의 10진수. 선행 0은 허용한다.
+- VALUE: 정확히 `0x` 뒤에 `0`~`9`, `A`~`F` 8자리
+- 성공: stdout 없음, `nand.txt` 갱신, `result.txt` 불변, 종료 코드 0
+
+### Read
+
+```text
+ssd R [LBA]
+```
+
+- 성공: stdout 없음, NAND 불변
+- `result.txt`: `0x` + 대문자 8자리 16진수 + 개행 한 줄로 교체
+- 미기록 LBA: `0x00000000`
+
+### 오류 출력과 종료 코드
+
+모든 오류는 stdout에 `INVALID COMMAND` 한 줄을 출력한다. 상세 원인은
+테스트 판정 계약과 분리해 stderr에 기록한다.
+
+| 종료 코드 | 의미 |
+|---:|---|
+| 0 | 성공 |
+| 2 | 명령 또는 인자 오류 |
+| 3 | 파일 I/O 오류 |
+| 4 | NAND 파일 손상 |
+| 5 | 기타 내부 오류 |
+
+Read 결과는 임시 파일 기록, `fflush()`, `fsync()`, `fclose()`가 모두
+성공한 뒤 `rename()`으로 교체한다. 실패 시 기존 `result.txt`를 보존한다.

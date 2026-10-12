@@ -25,10 +25,12 @@ Fault Injection은 이후 Phase의 범위다.
 
 | ID | 요구사항 | 구현 Phase |
 |---|---|---|
-| CLI-001 | `ssd W [LBA] [VALUE]`, `ssd R [LBA]`를 지원한다. | Phase 2 |
-| CLI-002 | 정상 Write는 stdout과 `result.txt`를 변경하지 않는다. | Phase 2 |
-| CLI-003 | 정상 Read는 마지막 값을 `result.txt`에만 기록한다. | Phase 2 |
-| CLI-004 | 잘못된 명령은 `INVALID COMMAND`와 정의된 종료 코드를 반환한다. | Phase 2 |
+| CLI-001 | `ssd W [LBA] [VALUE]`, `ssd R [LBA]`를 지원한다. | `TC-CLI-001` |
+| CLI-002 | 정상 Write는 stdout과 `result.txt`를 변경하지 않는다. | `TC-CLI-001`, `TC-CLI-004` |
+| CLI-003 | 정상 Read는 마지막 값을 `result.txt`에만 기록한다. | `TC-CLI-001`, `TC-CLI-002`, `TC-CLI-005` |
+| CLI-004 | 잘못된 명령은 `INVALID COMMAND`와 종료 코드 2를 반환한다. | `TC-CLI-006`~`009` |
+| CLI-005 | 파일 I/O 오류는 종료 코드 3, 손상 NAND는 종료 코드 4로 구분한다. | `TC-CLI-010`~`012` |
+| CLI-006 | 실패한 Write/Read는 기존 NAND와 `result.txt`를 정상 결과처럼 변경하지 않는다. | `TC-CLI-010`~`012` |
 | SHELL-001 | `write`, `read`, `fullwrite`, `fullread`, `help`, `exit`를 지원한다. | Phase 3 |
 | PROC-001 | SSD는 `fork()`/`execv()`/`waitpid()`로 실행한다. | Phase 3 |
 | ORACLE-001 | 기대값 모델은 SSD의 실제 NAND 데이터와 독립적이어야 한다. | Phase 4 |
