@@ -12,7 +12,8 @@ C11과 POSIX 환경에서 동작하는 가상 SSD 및 자동 검증 프레임워
 - Phase 3: 독립 프로세스 기반 Test Shell과 기본 명령 구현
 - Phase 4: 독립 Reference Test Oracle 구현
 - Phase 5: TestApp1/2, 테스트 러너, 격리, 자동 보고서 구현
-- Phase 6 이후: 구현 진행 예정
+- Phase 6: Fault Injection, Mutation 검출, 정상 회귀 구현
+- Phase 7 이후: 구현 진행 예정
 
 현재 `ssd`와 `testshell` 두 독립 실행 파일을 제공합니다.
 
@@ -96,6 +97,17 @@ Test Shell은 SSD 코드를 직접 호출하지 않고 매 명령마다
 - `reports/test_report.csv`
 - `reports/test_report.md`
 
+## Fault Injection
+
+```sh
+make fault-test
+```
+
+이 타깃은 정상 SSD와 별도로 `ssd_fault_boundary`,
+`ssd_fault_overwrite`를 빌드합니다. 테스트가 지정 결함을 FAIL로 검출하고,
+마지막에 정상 SSD 전체 회귀가 다시 PASS하는지 확인합니다. 결함 바이너리는
+배포용 `ssd`에 포함되지 않습니다.
+
 ## 문서
 
 - `docs/01_requirements.md`: 요구사항 및 테스트 추적성
@@ -104,11 +116,13 @@ Test Shell은 SSD 코드를 직접 호출하지 않고 매 명령마다
 - `docs/04_storage_format.md`: NAND 바이너리 포맷
 - `docs/05_test_plan.md`: 자동 테스트 전략과 실행 계약
 - `docs/06_test_matrix.md`: 요구사항과 테스트 매핑
+- `docs/07_fault_injection.md`: 결함 주입 및 판정 절차
 - `reports/phase1_validation.md`: 실제 빌드 및 테스트 증적
 - `reports/phase2_validation.md`: SSD CLI 및 회귀 테스트 증적
 - `reports/phase3_validation.md`: Test Shell 및 프로세스 실행 증적
 - `reports/phase4_validation.md`: 독립 Oracle 검증 증적
 - `reports/phase5_validation.md`: 자동화·격리·보고서 검증 증적
+- `reports/phase6_validation.md`: 결함 검출과 회귀 테스트 증적
 
 ## 저장 형식 주의
 

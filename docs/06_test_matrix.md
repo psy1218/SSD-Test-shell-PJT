@@ -27,5 +27,13 @@
 | TC-AUTO-007 | AUTO-003 | 환경 ERROR 종료 코드 2 |
 | TC-AUTO-008 | REPORT-001 | 로그와 보고서 필드 |
 
-Phase 6에서는 Fault 빌드별로 어떤 Test ID가 실제 FAIL을 발생시키는지 실행
-결과를 추가한다. 예상 검출과 실제 검출을 구분한다.
+## Fault Injection 실제 검출
+
+| Fault | 지정 검출 테스트 | 실제 결과 | 실제값 |
+|---|---|---:|---|
+| SSD_FAULT_LBA99 | TC-B002 | FAIL 검출 | 기대 `0xFFFFFFFF`, 실제 `0x00000000` |
+| SSD_FAULT_OVERWRITE | TC-F003 | FAIL 검출 | 기대 `0x12345678`, 실제 `0xAAAABBBB` |
+
+전체 suite에서도 LBA 99 결함은 TC-B002와 TC-S001, Overwrite 결함은
+TC-F003과 TC-S002를 포함한 관련 시나리오에서 검출됐다. 실제 실행 기준
+Mutation Score는 2/2, 100%다.

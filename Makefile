@@ -8,13 +8,15 @@ SSD_BINARY = ssd
 TESTSHELL_BINARY = testshell
 SANITIZED_SSD = $(BUILD_DIR)/ssd_sanitize
 SANITIZED_TESTSHELL = $(BUILD_DIR)/testshell_sanitize
+FAULT_BOUNDARY = ssd_fault_boundary
+FAULT_OVERWRITE = ssd_fault_overwrite
 STORAGE_TEST = $(BUILD_DIR)/test_storage
 SANITIZED_TEST = $(BUILD_DIR)/test_storage_sanitize
 CLI_TEST = tests/test_cli.sh
 SHELL_TEST = tests/test_shell.sh
 AUTOMATION_TEST = tests/test_automation.sh
 
-.PHONY: all test test-sanitize clean
+.PHONY: all test test-sanitize fault-test clean
 
 all: $(SSD_BINARY) $(TESTSHELL_BINARY) $(STORAGE_TEST)
 
@@ -36,6 +38,12 @@ $(SANITIZED_SSD): ssd.c ssd.h | $(BUILD_DIR)
 
 $(SANITIZED_TESTSHELL): testshell.c | $(BUILD_DIR)
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(SANITIZER_FLAGS) testshell.c -o $@
+
+$(FAULT_BOUNDARY): ssd.c ssd.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) -DSSD_FAULT_LBA99 ssd.c -o $@
+
+$(FAULT_OVERWRITE): ssd.c ssd.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) -DSSD_FAULT_OVERWRITE ssd.c -o $@
 
 $(SANITIZED_TEST): ssd.c ssd.h tests/test_storage.c | $(BUILD_DIR)
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(SANITIZER_FLAGS) -DSSD_NO_MAIN \
@@ -59,5 +67,10 @@ test-sanitize: $(SANITIZED_SSD) $(SANITIZED_TESTSHELL) $(SANITIZED_TEST)
 	UBSAN_OPTIONS=halt_on_error=1 sh $(AUTOMATION_TEST) \
 		./$(SANITIZED_TESTSHELL) ./$(SANITIZED_SSD)
 
+fault-test: $(SSD_BINARY) $(TESTSHELL_BINARY) $(FAULT_BOUNDARY) $(FAULT_OVERWRITE)
+	sh scripts/run_fault_tests.sh ./$(TESTSHELL_BINARY) ./$(SSD_BINARY) \
+		./$(FAULT_BOUNDARY) ./$(FAULT_OVERWRITE)
+
 clean:
-	rm -rf $(BUILD_DIR) $(SSD_BINARY) $(TESTSHELL_BINARY)
+	rm -rf $(BUILD_DIR) $(SSD_BINARY) $(TESTSHELL_BINARY) \
+		$(FAULT_BOUNDARY) $(FAULT_OVERWRITE)

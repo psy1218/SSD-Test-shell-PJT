@@ -40,7 +40,8 @@ Fault Injection은 이후 Phase의 범위다.
 | AUTO-002 | 각 테스트는 사용자 NAND와 분리된 초기 상태에서 실행한다. | TC-AUTO-005~006 |
 | AUTO-003 | 비대화형 전체/개별 실행과 0/1/2 종료 코드를 제공한다. | TC-AUTO-001~003, 007 |
 | REPORT-001 | 로그, 요약, CSV, Markdown 보고서를 실제 결과로 생성한다. | TC-AUTO-001, 008 |
-| FAULT-001 | 의도적 결함이 테스트에서 검출됨을 증명한다. | Phase 6 |
+| FAULT-001 | 의도적 LBA 99 및 Overwrite 결함이 지정 테스트에서 검출됨을 증명한다. | TC-M001~005 |
+| REG-001 | 결함 검출 후 정상 SSD 전체 테스트가 다시 PASS해야 한다. | TC-M000, TC-M006 |
 | QUAL-001 | 경고, ASan, UBSan, 회귀 테스트 결과를 남긴다. | Phase 8 |
 
 ## 설계상 비기능 요구사항

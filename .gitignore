@@ -1,6 +1,8 @@
 /build/
 /ssd
 /testshell
+/ssd_fault_boundary
+/ssd_fault_overwrite
 /nand.txt
 /result.txt
 *.tmp.*

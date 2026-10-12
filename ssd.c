@@ -236,6 +236,18 @@ SsdStatus ssd_storage_write_lba(const char *path, size_t lba,
         return status;
     }
 
+#if defined(SSD_FAULT_LBA99)
+    if (lba == 99U) {
+        return SSD_STATUS_OK;
+    }
+#endif
+
+#if defined(SSD_FAULT_OVERWRITE)
+    if (values[lba] != UINT32_C(0)) {
+        return SSD_STATUS_OK;
+    }
+#endif
+
     values[lba] = value;
     return ssd_storage_save_atomic(path, values);
 }
