@@ -37,7 +37,13 @@ GCC 정적 분석 대상:
 같은 `scripts/run_all_tests.sh`를 실행한다. 마지막에 로그, 요약, CSV,
 Markdown을 `validation-evidence` artifact로 업로드한다.
 
-워크플로 실제 실행 결과는 커밋 push 후 GitHub Actions에서 별도로 확인한다.
+커밋 `8b0db5b`를 Push한 뒤 첫 실제 워크플로를 확인했다.
+
+- Run: [SSD Validation CI #1](https://github.com/psy1218/SSD-Test-shell-PJT/actions/runs/38228132749)
+- 상태: `completed / success`
+- Full quality gate: PASS
+- Upload validation evidence: PASS
+- Artifact: `validation-evidence` (ID 11738050095)
 
 ## Phase 8 완료 판정
 
@@ -46,6 +52,6 @@ Markdown을 `validation-evidence` artifact로 업로드한다.
 - 메모리 및 UB 오류 미검출
 - 정적 분석 경고 없음
 - Fault 검출 후 정상 회귀 PASS
-- CI 정의 및 로컬 동일 명령 검증 완료
+- CI 정의, 실제 원격 실행 및 증적 업로드 검증 완료
 
 Phase 8 완료 조건을 충족했다.

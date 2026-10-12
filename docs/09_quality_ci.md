@@ -46,3 +46,13 @@ sh scripts/run_all_tests.sh
 
 Fault Job의 성공은 결함 SSD가 정상 동작했다는 뜻이 아니다. 지정된 mutation이
 예상 테스트에서 FAIL로 검출되고 정상 SSD 회귀가 PASS해야 Job이 성공한다.
+
+## 확인된 원격 실행
+
+2026-10-12 커밋 `8b0db5b`에서 첫 GitHub Actions 실행을 확인했다.
+
+- [SSD Validation CI #1](https://github.com/psy1218/SSD-Test-shell-PJT/actions/runs/38228132749)
+- Job `build-test-sanitize-fault`: SUCCESS
+- `Full quality gate`: SUCCESS
+- `Upload validation evidence`: SUCCESS
+- Artifact `validation-evidence`: 생성 확인
